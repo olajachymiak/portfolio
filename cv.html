@@ -621,11 +621,10 @@
     lines = []; paths.forEach(p => p.remove()); paths = [];
 
     const xGap = 14, yGap = 12;
-    const w = bounds.width + 200, h = bounds.height + 60;
-    const cols = Math.ceil(w / xGap);
-    const rows = Math.ceil(h / yGap);
-    const xOff = (bounds.width - xGap * cols) / 2;
-    const yOff = (bounds.height - yGap * rows) / 2;
+    const cols = Math.ceil((bounds.width + 200) / xGap);
+    const rows = Math.ceil((bounds.height + 100) / yGap);
+    const xOff = -100;
+    const yOff = -50;
 
     for (let i = 0; i < cols; i++) {
       const pts = [];
