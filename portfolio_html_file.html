@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aleksandra Jachymiak — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0eff4; color: #1a1a1a; }
+
+    /* ── Sticky navigation ── */
+    .top-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 0.9rem 2rem;
+      background: transparent;
+      transition: background 0.3s, box-shadow 0.3s, backdrop-filter 0.3s;
+    }
+    .top-nav.scrolled {
+      background: rgba(240, 239, 244, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    }
+    .top-nav a {
+      font-size: 12.5px; font-weight: 500; letter-spacing: 0.5px;
+      text-decoration: none; transition: color 0.2s;
+    }
+    /* Light on dark hero, dark on scroll */
+    .top-nav a { color: rgba(255,255,255,0.5); }
+    .top-nav a:hover { color: rgba(220,140,180,0.9); }
+    .top-nav.scrolled a { color: #999; }
+    .top-nav.scrolled a:hover { color: #7F77DD; }
+
+    /* ── Back to top ── */
+    .back-to-top {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 100;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(127,119,221,0.1); border: 1px solid rgba(127,119,221,0.2);
+      color: #7F77DD; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s, background 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .back-to-top:hover { background: rgba(127,119,221,0.18); }
+
+    /* ── Cursor glow ── */
+    .cursor-glow {
+      position: fixed; width: 220px; height: 220px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(127,119,221,0.08) 0%, transparent 70%);
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: left 0.15s ease-out, top 0.15s ease-out;
+    }
+
+    /* ── Hero ── */
+    .wave-hero {
+      position: relative;
+      padding: 7rem 3rem 5.5rem;
+      overflow: hidden;
+      background: #1c1c1f;
+      min-height: 560px;
+      display: flex;
+      align-items: center;
+    }
+    .wave-hero svg.wave-svg {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; pointer-events: none;
+    }
+    .wave-hero .pointer-dot {
+      position: absolute; top: 0; left: 0;
+      width: 0.5rem; height: 0.5rem;
+      background: rgba(220,140,180,0.6); border-radius: 50%;
+      transform: translate3d(calc(var(--px, -10px) - 50%), calc(var(--py, -10px) - 50%), 0);
+      will-change: transform; pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; text-align: center; }
+    .hero-eyebrow {
+      font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: rgba(220,140,180,0.7); margin-bottom: 1.4rem; font-weight: 500;
+    }
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 4.4rem; font-weight: 800;
+      color: #f0eef8; line-height: 1.04;
+      margin-bottom: 1.4rem; letter-spacing: -2px;
+      position: relative;
+    }
+    /* Ethereal glow behind name */
+    .hero-name-glow {
+      position: absolute; top: -50%; left: -20%;
+      width: 140%; height: 200%; z-index: -1;
+      opacity: 0.4; pointer-events: none; filter: blur(35px);
+    }
+    .hero-tagline {
+      font-size: 1.05rem; color: rgba(255,255,255,0.45);
+      line-height: 1.8; max-width: 520px; margin: 0 auto 2.2rem;
+    }
+    .hero-tagline em { font-style: normal; color: rgba(220,140,180,0.85); font-weight: 500; }
+    .hero-cta { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      padding: 10px 22px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s;
+    }
+    .btn-filled { background: rgba(220,140,180,0.85); color: #fff; border: none; }
+    .btn-filled:hover { background: rgba(220,140,180,1); }
+    .btn-ghost { background: transparent; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.15); }
+    .btn-ghost:hover { border-color: rgba(220,140,180,0.5); color: rgba(220,140,180,0.85); }
+
+    /* ── Card sections ── */
+    .card-section {
+      background: #fff;
+      border-radius: 20px;
+      padding: 3.5rem 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.03);
+      scroll-margin-top: 3rem;
+    }
+    .cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 2rem 1.5rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: #bbb; margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-size: 1.6rem; font-weight: 400; color: #111;
+      margin-bottom: 1.5rem; letter-spacing: -0.3px;
+    }
+    .story-text { font-size: 1rem; line-height: 1.9; color: #555; }
+    .story-text strong { color: #222; font-weight: 500; }
+    .story-text .hl { color: rgba(200,100,150,0.9); font-weight: 500; }
+
+    /* ── Projects ── */
+    .projects-list { margin-top: 2.5rem; }
+    .project-row {
+      display: grid; grid-template-columns: 3px 1fr;
+      gap: 0 1.75rem; margin-bottom: 2.5rem; align-items: start;
+      cursor: default; padding: 1rem 1.2rem;
+      margin-left: -1.2rem; margin-right: -1.2rem;
+      border-radius: 12px; transition: background 0.3s, transform 0.3s;
+    }
+    .project-row:hover { background: rgba(127,119,221,0.03); transform: translateX(4px); }
+    .project-row.teal:hover { background: rgba(127,119,221,0.03); }
+    .project-bar {
+      width: 3px; background: #ede9fc; border-radius: 3px;
+      margin-top: 5px; min-height: 70px; transition: background 0.25s;
+      height: 0; overflow: hidden;
+    }
+    .project-bar.bar-visible { height: auto; animation: barGrow 0.6s ease forwards; }
+    @keyframes barGrow { from { min-height: 0; max-height: 0; } to { min-height: 70px; max-height: 300px; } }
+    .project-row:hover .project-bar { background: rgba(220,140,180,0.8); }
+    .project-row.teal:hover .project-bar { background: #7F77DD; }
+    .project-name { font-size: 15px; font-weight: 500; color: #111; margin-bottom: 6px; }
+    .project-story { font-size: 13.5px; color: #777; line-height: 1.7; margin-bottom: 8px; }
+    .project-outcome { font-size: 12.5px; color: rgba(220,140,180,0.9); font-weight: 500; margin-bottom: 8px; }
+    .project-row.teal .project-outcome { color: #7F77DD; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag { font-size: 11px; padding: 3px 9px; border-radius: 5px; background: #fdf0f5; color: rgba(200,100,150,0.9); border: 1px solid #f5dce8; }
+    .tag.teal { background: #f0effe; color: #7F77DD; border-color: #dddaf8; }
+
+    /* ── Skills ── */
+    .skills-row { display: flex; flex-direction: column; gap: 1.4rem; margin-top: 1.2rem; }
+    .skill-line { display: flex; align-items: flex-start; gap: 1.2rem; }
+    .skill-cat { font-size: 12px; color: #aaa; width: 120px; flex-shrink: 0; padding-top: 5px; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .skill-pill {
+      font-size: 12.5px; padding: 5px 11px; border-radius: 6px;
+      background: #f5f4fc; color: #555; border: 1px solid #eae8f8; transition: all 0.15s;
+    }
+    .skill-pill:hover { background: #fdf0f5; color: rgba(200,100,150,0.9); }
+    .skill-pill.special { background: #fdf0f5; color: rgba(200,100,150,0.9); border-color: #f5dce8; }
+    .skill-pill.special:hover { background: #f8e0ec; }
+
+    /* ── Timeline ── */
+    .timeline { margin-top: 1.2rem; }
+    .tl-item { display: grid; grid-template-columns: 130px 1fr; gap: 1.75rem; padding-bottom: 2.2rem; position: relative; }
+    .tl-item::after { content: ''; position: absolute; left: 129.5px; top: 24px; bottom: 0; width: 1px; background: #eee; }
+    .tl-item:last-child::after { display: none; }
+    .tl-date { font-size: 11.5px; color: #999; text-align: right; padding-top: 3px; padding-right: 14px; line-height: 1.6; }
+    .tl-dot { position: absolute; left: 123px; top: 5px; width: 13px; height: 13px; border-radius: 50%; background: #fff; border: 2px solid rgba(220,140,180,0.7); z-index: 1; }
+    .tl-dot.muted { border-color: rgba(220,140,180,0.35); }
+    .tl-content { padding-left: 1.75rem; }
+    .tl-role { font-size: 15px; font-weight: 500; color: #111; margin-bottom: 3px; }
+    .tl-company { font-size: 12.5px; color: rgba(220,140,180,0.9); margin-bottom: 7px; }
+    .tl-desc { font-size: 13.5px; color: #888; line-height: 1.65; }
+
+    /* ── Certs ── */
+    .certs-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.2rem; }
+    .cert {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 18px; border-radius: 10px;
+      border: 1px solid #f5dce8; background: #fdfcff;
+      transition: border-color 0.2s;
+    }
+    .cert:hover { border-color: #f0c0d8; }
+    .cert-badge { width: 30px; height: 30px; border-radius: 8px; background: #fdf0f5; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; color: rgba(200,100,150,0.9); }
+    .cert-name { font-size: 13px; font-weight: 500; color: #333; }
+    .cert-yr { font-size: 11px; color: #bbb; margin-top: 2px; }
+
+    /* ── Education grid ── */
+    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.2rem; }
+    .edu-col { display: flex; flex-direction: column; gap: 12px; }
+    .edu-col-label { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(200,100,150,0.7); font-weight: 600; margin-bottom: 4px; }
+    .certs-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.2rem; }
+
+    /* ── Contact ── */
+    .contact-card {
+      background: #f5f3fa;
+      scroll-margin-top: 3rem;
+      border: 1px solid rgba(220,140,180,0.12);
+    }
+    .contact-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.2rem; }
+    .contact-chip {
+      font-size: 13.5px; color: #555; padding: 9px 16px; border-radius: 8px;
+      background: #fff; border: 1px solid rgba(220,140,180,0.18);
+      display: flex; align-items: center; gap: 8px; transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .contact-chip:hover { border-color: rgba(220,140,180,0.6); color: rgba(200,100,150,0.85); }
+    .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(220,140,180,0.7); flex-shrink: 0; }
+
+    /* ── Footer ── */
+    .footer { padding: 1.75rem 3rem; font-size: 12px; color: #ccc; text-align: center; }
+
+    /* ── Animations ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .fade { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+    .d1{animation-delay:.05s}.d2{animation-delay:.2s}.d3{animation-delay:.35s}.d4{animation-delay:.5s}
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .top-nav { gap: 1.2rem; padding: 0.7rem 1rem; }
+      .top-nav a { font-size: 11px; }
+      .wave-hero { padding: 4rem 1.5rem 3.5rem; min-height: 440px; }
+      .hero-name { font-size: 2.8rem; letter-spacing: -1px; }
+      .cards-container { padding: 1.2rem 0.8rem; gap: 1rem; }
+      .card-section { padding: 2.5rem 1.5rem; border-radius: 16px; }
+      .tl-item { grid-template-columns: 90px 1fr; gap: 1rem; }
+      .tl-dot { left: 84px; }
+      .tl-item::after { left: 89.5px; }
+      .tl-date { padding-right: 12px; }
+      .skill-line { flex-direction: column; gap: 0.5rem; }
+      .skill-cat { width: auto; }
+      .edu-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="top-nav" id="topNav">
+  <a href="#about">About</a>
+  <a href="#projects">Projects</a>
+  <a href="#skills">Skills</a>
+  <a href="#experience">Experience</a>
+  <a href="#education">Certifications</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<!-- ── HERO with simplex-noise wave field ── -->
+<div class="wave-hero" id="hero">
+  <svg class="wave-svg" id="waveSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div class="pointer-dot" id="pointerDot"></div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow fade d1">Product Owner &middot; Scrum Master &middot; Builder</div>
+    <h1 class="hero-name fade d2">
+      <svg class="hero-name-glow" id="etherealGlow" viewBox="0 0 600 200" preserveAspectRatio="none">
+        <defs>
+          <filter id="etherealFilter" x="-50%" y="-50%" width="200%" height="200%">
+            <feTurbulence id="turbulence" result="undulation" numOctaves="3" baseFrequency="0.004,0.008" seed="2" type="turbulence"/>
+            <feColorMatrix id="hueShift" in="undulation" type="hueRotate" values="0"/>
+            <feColorMatrix type="matrix" values="4 0 0 0 1  4 0 0 0 1  4 0 0 0 1  1 0 0 0 0" result="circulation"/>
+            <feDisplacementMap in="SourceGraphic" in2="circulation" scale="45" result="dist"/>
+            <feDisplacementMap in="dist" in2="undulation" scale="45" result="output"/>
+            <feGaussianBlur stdDeviation="8"/>
+          </filter>
+        </defs>
+        <ellipse cx="300" cy="100" rx="220" ry="70" fill="rgba(220,140,180,0.35)" filter="url(#etherealFilter)"/>
+        <ellipse cx="250" cy="110" rx="180" ry="55" fill="rgba(127,119,221,0.2)" filter="url(#etherealFilter)"/>
+      </svg>
+      Aleksandra<br>Jachymiak
+    </h1>
+    <p class="hero-tagline fade d3">
+      Product Owner by title, builder and problem solver by nature.<br>I manage and deliver tools that clients actually need &mdash; and I build the systems that make teams run better.
+    </p>
+    <div class="hero-cta fade d4">
+      <a class="btn btn-filled" href="mailto:olajachymiak1598@gmail.com">Say hello</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/aleksandra-jachymiak-8b647717b/" target="_blank">LinkedIn &#8599;</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── CARD SECTIONS ── -->
+<div class="cards-container">
+
+  <div class="card-section reveal" id="about">
+    <div class="section-eyebrow">About</div>
+    <div class="section-title">Who I am</div>
+    <p class="story-text">
+      I'm a certified <strong>Product Owner &amp; Scrum Master</strong> at Jacobs in Krak&oacute;w, owning product delivery for internal tools across a multi-team programme. My background in <strong>financial services, document controlling, and AI&#8209;powered product development</strong> means I bring both the technical fluency to build and the commercial awareness to prioritise.<br><br>
+      But I don't stop at roadmaps and ceremonies. When I see a gap &mdash; a process that wastes hours, a workflow that frustrates people &mdash; I build the fix. Six automation systems, all driven by <span class="hl">own initiative</span>.<br>None of them assigned.
+    </p>
+  </div>
+
+  <div class="card-section reveal" id="projects">
+    <div class="section-eyebrow">Work I'm proud of</div>
+    <div class="section-title">Six systems. One common thread.</div>
+    <p class="story-text">Someone mentioned a problem. I built a solution.</p>
+    <div class="projects-list">
+      <div class="project-row reveal">
+        <div class="project-bar"></div>
+        <div>
+          <div class="project-name">Resource Request System</div>
+          <div class="project-story">POs had no visibility into resource assignments &mdash; they relied on ad-hoc Teams messages and emails to the resource manager. I replaced the manual MS Forms + Excel flow with a custom Azure DevOps system: typed work items, automatic epic linking, a dedicated board, and real-time Teams notifications via webhooks.</div>
+          <div class="project-outcome">&rarr; 20+ person programme &mdash; zero chasing, full transparency</div>
+          <div class="project-tags"><span class="tag">Azure DevOps</span><span class="tag">Power Automate</span><span class="tag">Webhooks</span><span class="tag">MS Teams</span></div>
+        </div>
+      </div>
+      <div class="project-row reveal teal">
+        <div class="project-bar"></div>
+        <div>
+          <div class="project-name">Automated Sprint Dashboard</div>
+          <div class="project-story">Developers were searching through multiple Excel files to find their sprint assignments. I built an end-to-end pipeline: Power Automate triggers every two weeks, pulls allocation data from Excel, pushes to Azure repo, fires a Python pipeline, deploys a formatted summary to DevOps Wiki.</div>
+          <div class="project-outcome">&rarr; Single source of truth &mdash; updated automatically, no manual effort</div>
+          <div class="project-tags"><span class="tag teal">Python</span><span class="tag teal">Azure Pipelines</span><span class="tag teal">Power Automate</span><span class="tag teal">DevOps Wiki</span></div>
+        </div>
+      </div>
+      <div class="project-row reveal">
+        <div class="project-bar"></div>
+        <div>
+          <div class="project-name">Quality Reporting Automation</div>
+          <div class="project-story">The quality team was sending ~300 emails manually every month &mdash; filtering, sorting, doing VLOOKUPs. I built a pipeline: new file on SharePoint triggers Power Automate &rarr; Azure Blob &rarr; custom Python/Pandas function &rarr; personalised emails, consolidated per recipient. Runs automatically, even when the team is away.</div>
+          <div class="project-outcome">&rarr; ~300 manual emails per month &rarr; zero</div>
+          <div class="project-tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Azure Functions</span><span class="tag">SharePoint</span></div>
+        </div>
+      </div>
+      <div class="project-row reveal teal">
+        <div class="project-bar"></div>
+        <div>
+          <div class="project-name">Cross-Reference Checker</div>
+          <div class="project-story">Specs processors were manually Ctrl+F-ing through 20&ndash;200 files per project to validate section references against the table of contents. I wrote a standalone Python .exe they could run locally &mdash; select a folder, get a clean Excel summary report.</div>
+          <div class="project-outcome">&rarr; 1,000+ hours saved to date &mdash; team came back for a second tool</div>
+          <div class="project-tags"><span class="tag teal">Python</span><span class="tag teal">Desktop App</span><span class="tag teal">Excel Output</span></div>
+        </div>
+      </div>
+      <div class="project-row reveal">
+        <div class="project-bar"></div>
+        <div>
+          <div class="project-name">Bug &amp; Support Triage System</div>
+          <div class="project-story">Bugs were reported via MS Forms, then manually reviewed in a private Excel. Nothing was visible to leadership, and submissions could get lost. I connected the form to Azure DevOps via Power Automate &mdash; auto-creating typed work items with auto-assignment, plus a SharePoint tracker with direct links to each DevOps item.</div>
+          <div class="project-outcome">&rarr; Full leadership visibility &mdash; no submission ever lost</div>
+          <div class="project-tags"><span class="tag">Azure DevOps</span><span class="tag">Power Automate</span><span class="tag">SharePoint</span><span class="tag">MS Forms</span></div>
+        </div>
+      </div>
+      <div class="project-row reveal teal">
+        <div class="project-bar"></div>
+        <div>
+          <div class="project-name">GitHub PR Notifications</div>
+          <div class="project-story">Developers relied on manual pinging and checking Outlook to know when a pull request was ready. I set up GitHub webhooks connected to Power Automate &mdash; a Teams bot now posts real-time alerts with branch name, author, and a direct link on every new PR and merge to main.</div>
+          <div class="project-outcome">&rarr; Zero manual pinging &mdash; instant awareness across the team</div>
+          <div class="project-tags"><span class="tag teal">GitHub</span><span class="tag teal">Webhooks</span><span class="tag teal">Power Automate</span><span class="tag teal">MS Teams</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-section reveal" id="skills">
+    <div class="section-eyebrow">Skills</div>
+    <div class="section-title">What I bring to the table</div>
+    <div class="skills-row">
+      <div class="skill-line"><div class="skill-cat">Product</div><div class="skill-pills"><span class="skill-pill">Roadmaps</span><span class="skill-pill">Backlog management</span><span class="skill-pill">User research</span><span class="skill-pill">Stakeholder comms</span><span class="skill-pill">Scrum</span><span class="skill-pill">SAFe (certified)</span><span class="skill-pill">Go-to-market</span></div></div>
+      <div class="skill-line"><div class="skill-cat">Technical</div><div class="skill-pills"><span class="skill-pill">Python</span><span class="skill-pill">Pandas</span><span class="skill-pill">Azure DevOps</span><span class="skill-pill">Azure Functions</span><span class="skill-pill">Power Automate</span><span class="skill-pill">SharePoint</span><span class="skill-pill">GitHub</span><span class="skill-pill">MS SQL</span></div></div>
+      <div class="skill-line"><div class="skill-cat">AI &amp; prototyping</div><div class="skill-pills"><span class="skill-pill special">Lovable</span><span class="skill-pill special">Claude Code</span><span class="skill-pill special">Replit</span><span class="skill-pill special">Antigravity</span></div></div>
+      <div class="skill-line"><div class="skill-cat">Languages</div><div class="skill-pills"><span class="skill-pill">Polish &mdash; native</span><span class="skill-pill">English &mdash; C1</span><span class="skill-pill">Spanish &mdash; B1</span></div></div>
+    </div>
+  </div>
+
+  <div class="card-section reveal" id="experience">
+    <div class="section-eyebrow">Experience</div>
+    <div class="section-title">Where I've been</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-date">Nov 2024<br>Present</div><div class="tl-dot"></div><div class="tl-content"><div class="tl-role">Product Owner &amp; Scrum Master</div><div class="tl-company">Jacobs &mdash; Krak&oacute;w</div><div class="tl-desc">Owning product delivery for internal engineering tools across a multi-team programme &mdash; backlog, roadmap, ceremonies, stakeholder communication, and all six automation systems listed above.</div></div></div>
+      <div class="tl-item"><div class="tl-date">Jul 2023<br>Oct 2024</div><div class="tl-dot"></div><div class="tl-content"><div class="tl-role">Document Control Specialist</div><div class="tl-company">Jacobs &mdash; Krak&oacute;w</div><div class="tl-desc">Managing documentation workflows across large-scale international engineering projects with rigorous compliance and audit standards.</div></div></div>
+      <div class="tl-item"><div class="tl-date">Oct 2022<br>Jun 2023</div><div class="tl-dot"></div><div class="tl-content"><div class="tl-role">Senior Investor Services Specialist</div><div class="tl-company">Brown Brothers Harriman &mdash; Krak&oacute;w</div><div class="tl-desc">Client relationship management across Dublin, Hong Kong and Luxembourg. Risk escalation, team mentoring, deputising for supervisor.</div></div></div>
+      <div class="tl-item"><div class="tl-date">Jun 2021<br>Sep 2022</div><div class="tl-dot"></div><div class="tl-content"><div class="tl-role">Junior Investor Services Specialist</div><div class="tl-company">Brown Brothers Harriman &mdash; Krak&oacute;w</div><div class="tl-desc">Processing trades and data updates across multiple global funds under strict regulatory frameworks.</div></div></div>
+      <div class="tl-item"><div class="tl-date">Aug 2019<br>May 2020</div><div class="tl-dot"></div><div class="tl-content"><div class="tl-role">Human Resources Assistant</div><div class="tl-company">Colorado Mesa University &mdash; USA</div><div class="tl-desc">Supporting recruitment, onboarding and training coordination for the HR department.</div></div></div>
+    </div>
+  </div>
+
+  <div class="card-section reveal" id="education">
+    <div class="section-eyebrow">Education &amp; Certifications</div>
+    <div class="section-title">Credentials</div>
+    <div class="edu-grid">
+      <div class="edu-col">
+        <div class="edu-col-label">Education</div>
+        <div class="cert"><div class="cert-badge">&#9678;</div><div><div class="cert-name">BSc Human Resource Management</div><div class="cert-yr">University of Bradford, 2021</div></div></div>
+        <div class="cert"><div class="cert-badge">&#9678;</div><div><div class="cert-name">Business Management (Visiting)</div><div class="cert-yr">Colorado Mesa University, 2020</div></div></div>
+      </div>
+      <div class="edu-col">
+        <div class="edu-col-label">Certifications</div>
+        <div class="cert"><div class="cert-badge">&#10022;</div><div><div class="cert-name">SAFe 6.0 PO/PM</div><div class="cert-yr">2025</div></div></div>
+        <div class="cert"><div class="cert-badge">&#10022;</div><div><div class="cert-name">SAFe 6.0 Principles</div><div class="cert-yr">2024</div></div></div>
+        <div class="cert"><div class="cert-badge">&#10022;</div><div><div class="cert-name">Agile Scrum Master</div><div class="cert-yr">2024</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-section contact-card reveal" id="contact">
+    <div class="section-eyebrow">Contact</div>
+    <div class="section-title">Let's talk</div>
+    <div class="contact-grid">
+      <a class="contact-chip" href="mailto:olajachymiak1598@gmail.com"><div class="chip-dot"></div>olajachymiak1598@gmail.com</a>
+      <div class="contact-chip"><div class="chip-dot"></div>+48 515 099 220</div>
+      <div class="contact-chip"><div class="chip-dot"></div>Poland</div>
+      <a class="contact-chip" href="https://www.linkedin.com/in/aleksandra-jachymiak-8b647717b/" target="_blank"><div class="chip-dot"></div>LinkedIn &#8599;</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">&copy; 2026 Aleksandra Jachymiak</div>
+
+<script>
+  /* ══════════════════════════════════════════════
+     Simplex Noise 2D — compact vanilla JS
+     ══════════════════════════════════════════════ */
+  function createNoise2D() {
+    const perm = new Uint8Array(512);
+    const grad = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+    for (let i = 0; i < 256; i++) perm[i] = i;
+    for (let i = 255; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [perm[i], perm[j]] = [perm[j], perm[i]];
+    }
+    for (let i = 0; i < 256; i++) perm[i + 256] = perm[i];
+    const F2 = 0.5 * (Math.sqrt(3) - 1);
+    const G2 = (3 - Math.sqrt(3)) / 6;
+    return function(x, y) {
+      const s = (x + y) * F2;
+      const i = Math.floor(x + s), j = Math.floor(y + s);
+      const t = (i + j) * G2;
+      const x0 = x - (i - t), y0 = y - (j - t);
+      const i1 = x0 > y0 ? 1 : 0, j1 = x0 > y0 ? 0 : 1;
+      const x1 = x0 - i1 + G2, y1 = y0 - j1 + G2;
+      const x2 = x0 - 1 + 2 * G2, y2 = y0 - 1 + 2 * G2;
+      const ii = i & 255, jj = j & 255;
+      let n0 = 0, n1 = 0, n2 = 0;
+      let t0 = 0.5 - x0*x0 - y0*y0;
+      if (t0 >= 0) { const g = grad[perm[ii + perm[jj]] % 8]; t0 *= t0; n0 = t0 * t0 * (g[0]*x0 + g[1]*y0); }
+      let t1 = 0.5 - x1*x1 - y1*y1;
+      if (t1 >= 0) { const g = grad[perm[ii+i1 + perm[jj+j1]] % 8]; t1 *= t1; n1 = t1 * t1 * (g[0]*x1 + g[1]*y1); }
+      let t2 = 0.5 - x2*x2 - y2*y2;
+      if (t2 >= 0) { const g = grad[perm[ii+1 + perm[jj+1]] % 8]; t2 *= t2; n2 = t2 * t2 * (g[0]*x2 + g[1]*y2); }
+      return 70 * (n0 + n1 + n2);
+    };
+  }
+
+  /* ══════════════════════════════════════════════
+     Wave field — adapted from xubohuah component
+     ══════════════════════════════════════════════ */
+  const heroEl = document.getElementById('hero');
+  const svgEl = document.getElementById('waveSvg');
+  const dotEl = document.getElementById('pointerDot');
+  const noise = createNoise2D();
+
+  const mouse = { x: -100, y: 0, lx: 0, ly: 0, sx: 0, sy: 0, v: 0, vs: 0, a: 0, set: false };
+  let lines = [];
+  let svgPaths = [];
+  let bounding = null;
+
+  function setSize() {
+    bounding = heroEl.getBoundingClientRect();
+    svgEl.style.width = bounding.width + 'px';
+    svgEl.style.height = bounding.height + 'px';
+  }
+
+  function setLines() {
+    if (!bounding) return;
+    const { width, height } = bounding;
+    lines = [];
+    svgPaths.forEach(p => p.remove());
+    svgPaths = [];
+
+    const xGap = 10, yGap = 10;
+    const oW = width + 200, oH = height + 30;
+    const totalLines = Math.ceil(oW / xGap);
+    const totalPts = Math.ceil(oH / yGap);
+    const xStart = (width - xGap * totalLines) / 2;
+    const yStart = (height - yGap * totalPts) / 2;
+
+    for (let i = 0; i < totalLines; i++) {
+      const pts = [];
+      for (let j = 0; j < totalPts; j++) {
+        pts.push({
+          x: xStart + xGap * i,
+          y: yStart + yGap * j,
+          wave: { x: 0, y: 0 },
+          cursor: { x: 0, y: 0, vx: 0, vy: 0 }
+        });
+      }
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', 'rgba(220,140,180,0.35)');
+      path.setAttribute('stroke-width', '1');
+      svgEl.appendChild(path);
+      svgPaths.push(path);
+      lines.push(pts);
+    }
+  }
+
+  function updateMouse(x, y) {
+    if (!bounding) return;
+    mouse.x = x - bounding.left;
+    mouse.y = y - bounding.top + window.scrollY;
+    if (!mouse.set) { mouse.sx = mouse.x; mouse.sy = mouse.y; mouse.lx = mouse.x; mouse.ly = mouse.y; mouse.set = true; }
+  }
+
+  window.addEventListener('mousemove', e => updateMouse(e.pageX, e.pageY));
+  heroEl.addEventListener('touchmove', e => { e.preventDefault(); updateMouse(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+
+  function movePoints(time) {
+    lines.forEach(pts => {
+      pts.forEach(p => {
+        const move = noise((p.x + time * 0.008) * 0.003, (p.y + time * 0.003) * 0.002) * 8;
+        p.wave.x = Math.cos(move) * 12;
+        p.wave.y = Math.sin(move) * 6;
+
+        const dx = p.x - mouse.sx, dy = p.y - mouse.sy;
+        const d = Math.hypot(dx, dy);
+
+        // Velocity-based ripple (smooth, reacts to movement)
+        const l = Math.max(175, mouse.vs);
+        if (d < l) {
+          const s = 1 - d / l;
+          const f = Math.cos(d * 0.001) * s;
+          p.cursor.vx += Math.cos(mouse.a) * f * l * mouse.vs * 0.00035;
+          p.cursor.vy += Math.sin(mouse.a) * f * l * mouse.vs * 0.00035;
+        }
+        p.cursor.vx += (0 - p.cursor.x) * 0.01;
+        p.cursor.vy += (0 - p.cursor.y) * 0.01;
+        p.cursor.vx *= 0.95;
+        p.cursor.vy *= 0.95;
+        p.cursor.x += p.cursor.vx;
+        p.cursor.y += p.cursor.vy;
+        p.cursor.x = Math.min(50, Math.max(-50, p.cursor.x));
+        p.cursor.y = Math.min(50, Math.max(-50, p.cursor.y));
+      });
+    });
+  }
+
+  function drawLines() {
+    lines.forEach((pts, i) => {
+      if (pts.length < 2 || !svgPaths[i]) return;
+      const f = pts[0];
+      let d = `M ${f.x + f.wave.x} ${f.y + f.wave.y}`;
+      for (let j = 1; j < pts.length; j++) {
+        const p = pts[j];
+        d += `L ${p.x + p.wave.x + p.cursor.x} ${p.y + p.wave.y + p.cursor.y}`;
+      }
+      svgPaths[i].setAttribute('d', d);
+    });
+  }
+
+  function tick(time) {
+    mouse.sx += (mouse.x - mouse.sx) * 0.1;
+    mouse.sy += (mouse.y - mouse.sy) * 0.1;
+    const dx = mouse.x - mouse.lx, dy = mouse.y - mouse.ly;
+    mouse.v = Math.hypot(dx, dy);
+    mouse.vs += (mouse.v - mouse.vs) * 0.1;
+    mouse.vs = Math.min(100, mouse.vs);
+    mouse.lx = mouse.x; mouse.ly = mouse.y;
+    mouse.a = Math.atan2(dy, dx);
+
+    // Update pointer dot
+    dotEl.style.setProperty('--px', mouse.sx + 'px');
+    dotEl.style.setProperty('--py', mouse.sy + 'px');
+
+    movePoints(time);
+    drawLines();
+    requestAnimationFrame(tick);
+  }
+
+  setSize();
+  setLines();
+  window.addEventListener('resize', () => { setSize(); setLines(); });
+  requestAnimationFrame(tick);
+
+  /* ── Ethereal glow: animate hue rotation ── */
+  const hueShift = document.getElementById('hueShift');
+  let hue = 0;
+  function animateEthereal() {
+    hue = (hue + 0.8) % 360;
+    if (hueShift) hueShift.setAttribute('values', String(hue));
+    requestAnimationFrame(animateEthereal);
+  }
+  animateEthereal();
+
+  /* ── Scroll: nav, back-to-top ── */
+  const nav = document.getElementById('topNav');
+  const backBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    const sy = window.pageYOffset;
+    nav.classList.toggle('scrolled', sy > 40);
+    backBtn.classList.toggle('visible', sy > heroEl.offsetHeight);
+  }, { passive: true });
+
+  /* ── IntersectionObserver: reveals ── */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.closest('.projects-list')
+          ? Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80 : 0;
+        setTimeout(() => entry.target.classList.add('visible'), delay);
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  /* ── IntersectionObserver: project bars ── */
+  const barObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('bar-visible'); barObs.unobserve(entry.target); }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.project-bar').forEach(el => barObs.observe(el));
+
+  /* ── Cursor glow ── */
+  const glow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', e => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
+  if ('ontouchstart' in window) glow.style.display = 'none';
+</script>
+</body>
+</html>

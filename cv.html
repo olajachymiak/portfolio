@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aleksandra Jachymiak — CV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0eff4;
+      color: #1a1a1a;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 830px;
+      margin: 2rem auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .cv-header {
+      background: #1c1c1f;
+      padding: 5rem 3rem 2rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .cv-header::before {
+      content: '';
+      position: absolute;
+      top: -40%; right: -10%;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(220,140,180,0.12) 0%, rgba(127,119,221,0.06) 50%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .cv-header::after {
+      content: '';
+      position: absolute;
+      bottom: -30%; left: 10%;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(127,119,221,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .cv-wave-svg {
+      position: absolute !important; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0 !important;
+    }
+    .cv-header > *:not(.cv-wave-svg) { position: relative; z-index: 1; }
+    .cv-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: #f0eef8;
+      margin-bottom: 0.35rem;
+    }
+    .cv-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(220,140,180,0.9);
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+    .cv-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.5);
+    }
+    .cv-contact a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .cv-contact a:hover { color: rgba(220,140,180,0.9); }
+    .cv-portfolio-link {
+      color: rgba(220,140,180,0.7) !important;
+      border: 1px solid rgba(220,140,180,0.25);
+      border-radius: 12px;
+      padding: 0.15rem 0.6rem;
+      font-size: 11px;
+      letter-spacing: 0.3px;
+    }
+    .cv-portfolio-link:hover { border-color: rgba(220,140,180,0.5) !important; }
+
+    /* ── Body ── */
+    .cv-body { padding: 2rem 3rem 2.5rem; }
+
+    /* ── Section ── */
+    .cv-section { margin-bottom: 1.8rem; }
+    .cv-section:last-child { margin-bottom: 0; }
+    .cv-section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(200,100,150,0.85);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1.5px solid rgba(220,140,180,0.15);
+    }
+
+    /* ── About ── */
+    .cv-section.cv-accent-left {
+      border-left: 3px solid rgba(220,140,180,0.5);
+      padding-left: 1.2rem;
+    }
+    .cv-about {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.75;
+    }
+
+    /* ── Experience timeline ── */
+    .cv-timeline {
+      position: relative;
+      padding-left: 1.4rem;
+    }
+    .cv-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.4rem;
+      bottom: 0.4rem;
+      width: 2px;
+      background: linear-gradient(to bottom, rgba(220,140,180,0.4), rgba(127,119,221,0.25));
+      border-radius: 2px;
+    }
+    .cv-role {
+      margin-bottom: 1.4rem;
+      position: relative;
+    }
+    .cv-role::before {
+      content: '';
+      position: absolute;
+      left: -1.4rem;
+      top: 0.45rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(220,140,180,0.6);
+      border: 2px solid #fff;
+      transform: translateX(-3px);
+    }
+    .cv-role:last-child { margin-bottom: 0; }
+    .cv-role-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+    .cv-role-title { font-size: 14px; font-weight: 600; color: #111; }
+    .cv-role-date { font-size: 12px; color: #999; white-space: nowrap; }
+    .cv-role-company { font-size: 12.5px; color: rgba(220,140,180,0.85); margin-bottom: 0.5rem; }
+
+    .cv-bullets { padding-left: 1.1rem; }
+    .cv-bullets li {
+      font-size: 12.5px;
+      color: #555;
+      margin-bottom: 0.3rem;
+      line-height: 1.6;
+    }
+
+    /* ── Impact note ── */
+    .cv-impact-note {
+      font-size: 12.5px;
+      color: #777;
+      font-style: italic;
+      margin-bottom: 0.6rem;
+      line-height: 1.6;
+    }
+    .cv-portfolio-ref {
+      color: rgba(200,100,150,0.75);
+      text-decoration: none;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 11.5px;
+      transition: color 0.2s;
+    }
+    .cv-portfolio-ref:hover { color: rgba(200,100,150,1); }
+
+    /* ── Impact table ── */
+    .cv-impact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      margin-top: 0.3rem;
+    }
+    .cv-impact-table th {
+      text-align: left;
+      font-weight: 600;
+      color: #999;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1.5px solid rgba(220,140,180,0.15);
+    }
+    .cv-impact-table td {
+      padding: 0.5rem 0.6rem;
+      color: #555;
+      vertical-align: top;
+      border-bottom: 1px solid #f0f0f0;
+      line-height: 1.5;
+    }
+    .cv-impact-table td:first-child {
+      font-weight: 500;
+      color: #333;
+      white-space: nowrap;
+      width: 22%;
+    }
+    .cv-impact-table td:last-child {
+      color: rgba(200,100,150,0.85);
+      font-weight: 500;
+      width: 28%;
+    }
+    .cv-impact-table tr:last-child td { border-bottom: none; }
+
+    /* ── Highlighted section card ── */
+    .cv-section.cv-highlight {
+      background: #faf9fc;
+      border: 1px solid rgba(220,140,180,0.12);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+    }
+    .cv-section.cv-highlight .cv-section-title {
+      margin-top: 0;
+    }
+
+    /* ── Featured card (Key Achievements) ── */
+    .cv-section.cv-featured {
+      background: #faf9fc;
+      border: 1px solid rgba(220,140,180,0.12);
+      border-left: 3px solid rgba(220,140,180,0.5);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+    }
+    .cv-section.cv-featured .cv-section-title {
+      margin-top: 0;
+    }
+
+    /* ── Skills ── */
+    .cv-skills-row { margin-bottom: 0; display: flex; gap: 0.8rem; align-items: baseline; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(220,140,180,0.12); }
+    .cv-skills-row + .cv-skills-row { padding-top: 0.5rem; }
+    .cv-skills-row:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+    .cv-skill-cat {
+      font-size: 11px;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      width: 110px;
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+    .cv-skill-list { font-size: 12.5px; color: #555; }
+
+    /* ── Two-column grid ── */
+    .cv-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .cv-col-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(200,100,150,0.7);
+      margin-bottom: 0.5rem;
+    }
+    .cv-cert-item { margin-bottom: 0.35rem; }
+    .cv-cert-name { font-size: 12.5px; font-weight: 500; color: #333; }
+    .cv-cert-detail { font-size: 11.5px; color: #999; }
+
+    /* ── Languages ── */
+    .cv-langs {
+      font-size: 12.5px;
+      color: #555;
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .cv-lang-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #f5f4f9;
+      border: 1px solid rgba(127,119,221,0.1);
+      border-radius: 20px;
+      padding: 0.35rem 1rem;
+      font-size: 12px;
+    }
+    .cv-lang-label { font-weight: 600; color: #333; }
+    .cv-lang-level { color: #999; font-size: 11px; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 10mm 12mm; size: A4; }
+      body { background: #fff; font-size: 11px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .cv-header {
+        background: #1c1c1f !important;
+        padding: 1.2rem 1.8rem 1rem !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .cv-header::before, .cv-header::after { display: none; }
+      .cv-wave-svg { display: none; }
+      .cv-name { font-size: 1.6rem; margin-bottom: 0.2rem; }
+      .cv-title { font-size: 12px; margin-bottom: 0.6rem; }
+      .cv-contact { font-size: 10.5px; gap: 0.8rem; }
+      .cv-body { padding: 1rem 1.8rem 1.2rem; }
+      .cv-section { margin-bottom: 1rem; }
+      .cv-section-title { font-size: 11px; letter-spacing: 1.5px; margin-bottom: 0.5rem; padding-bottom: 0.3rem; }
+      .cv-about { font-size: 11px; line-height: 1.55; }
+      .cv-role { margin-bottom: 0.8rem; }
+      .cv-page-break { page-break-before: always; }
+      .cv-role-title { font-size: 12px; }
+      .cv-role-date { font-size: 10.5px; }
+      .cv-role-company { font-size: 11px; margin-bottom: 0.3rem; }
+      .cv-bullets li { font-size: 10.5px; margin-bottom: 0.15rem; line-height: 1.5; }
+      .cv-impact-note { font-size: 10.5px; }
+      .cv-impact-table { font-size: 10px; }
+      .cv-impact-table th { font-size: 9px; padding: 0.25rem 0.4rem; }
+      .cv-impact-table td { padding: 0.3rem 0.4rem; line-height: 1.4; }
+      .cv-skills-row { margin-bottom: 0.3rem; }
+      .cv-skill-cat { font-size: 9.5px; width: 90px; }
+      .cv-skill-list { font-size: 10.5px; }
+      .cv-cert-name { font-size: 11px; }
+      .cv-cert-detail { font-size: 10px; }
+      .cv-col-label { font-size: 9.5px; }
+      .cv-langs { font-size: 11px; }
+      .cv-section.cv-highlight { background: #f9f8fc !important; padding: 0.8rem 1rem; border-radius: 6px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cv-section.cv-featured { background: #faf9fc !important; padding: 0.8rem 1rem; border-radius: 6px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cv-timeline { padding-left: 1rem; }
+      .cv-timeline::before { width: 1.5px; }
+      .cv-role::before { width: 6px; height: 6px; left: -1rem; transform: translateX(-2.5px); }
+      .cv-section.cv-accent-left { border-left: 2px solid rgba(220,140,180,0.4); padding-left: 0.8rem; }
+      .cv-lang-pill { padding: 0.2rem 0.6rem; font-size: 10px; }
+      a { color: inherit !important; text-decoration: none !important; }
+    }
+
+    @media (max-width: 600px) {
+      .cv-header { padding: 2rem 1.5rem 1.5rem; }
+      .cv-body { padding: 1.5rem 1.5rem 2rem; }
+      .cv-name { font-size: 1.8rem; }
+      .cv-contact { gap: 0.8rem; font-size: 11.5px; }
+      .cv-two-col { grid-template-columns: 1fr; gap: 1rem; }
+      .cv-skills-row { flex-direction: column; gap: 0.2rem; }
+      .cv-skill-cat { width: auto; }
+      .cv-impact-table td:first-child { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <div class="cv-header" id="cvHeader">
+    <svg class="cv-wave-svg" id="cvWaveSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="cv-name">Aleksandra Jachymiak</div>
+    <div class="cv-title">Product Owner &amp; Scrum Master</div>
+    <div class="cv-contact">
+      <a href="portfolio_html_file.html" target="_blank" class="cv-portfolio-link">My Portfolio</a>
+      <span>Poland</span>
+      <span>+48 515 099 220</span>
+      <a href="mailto:olajachymiak1598@gmail.com">olajachymiak1598@gmail.com</a>
+      <a href="https://www.linkedin.com/in/aleksandra-jachymiak-8b647717b/" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+
+  <div class="cv-body">
+
+    <!-- ── ABOUT ── -->
+    <div class="cv-section cv-accent-left">
+      <div class="cv-section-title">About</div>
+      <div class="cv-about">
+        Certified Product Owner &amp; Scrum Master with experience across financial services, document controlling, and AI&#8209;powered product development. I sit at the intersection of product thinking and technical execution &mdash; equally comfortable with running a backlog, facilitating a retrospective, creating the Python script or low-code solution that fixes the underlying problem. Currently exploring opportunities where product impact is real, the team is strong, and there&rsquo;s room to grow.
+      </div>
+    </div>
+
+    <!-- ── KEY ACHIEVEMENTS ── -->
+    <div class="cv-section cv-featured">
+      <div class="cv-section-title">Key Achievements</div>
+      <div class="cv-impact-note">Six automation systems independently designed and shipped at Jacobs &mdash; saving 1,000+ hours, eliminating ~300 monthly emails, and giving a 20-person team real-time visibility. <a href="portfolio_html_file.html" target="_blank" class="cv-portfolio-ref">See more details in my portfolio &rarr;</a></div>
+      <table class="cv-impact-table">
+        <thead>
+          <tr><th>Project</th><th>Problem</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Resource Request System</td>
+            <td>POs relied on ad-hoc messages and emails for resource assignments</td>
+            <td>Self-service system with real-time Teams notifications &amp; full audit trail</td>
+          </tr>
+          <tr>
+            <td>Sprint Dashboard</td>
+            <td>Developers searched multiple Excel files for sprint assignments</td>
+            <td>Single source of truth, auto-updated every two weeks</td>
+          </tr>
+          <tr>
+            <td>PR Notifications</td>
+            <td>Team relied on manual pinging for pull request awareness</td>
+            <td>Real-time automated alerts via Teams bot</td>
+          </tr>
+          <tr>
+            <td>Bug Triage System</td>
+            <td>Bug reports manually reviewed in private Excel</td>
+            <td>Automated work items with auto-assignment &amp; leadership visibility</td>
+          </tr>
+          <tr>
+            <td>Quality Reporting</td>
+            <td>Quality team sent ~300 emails manually every month</td>
+            <td>Zero manual emails &mdash; fully automated pipeline</td>
+          </tr>
+          <tr>
+            <td>Cross-Reference Checker</td>
+            <td>Specs processors manually searched 20&ndash;200 files per project</td>
+            <td>1,000+ hours saved &mdash; team requested a second tool</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── EXPERIENCE ── -->
+    <div class="cv-section">
+      <div class="cv-section-title">Experience</div>
+
+      <div class="cv-timeline">
+      <div class="cv-role">
+        <div class="cv-role-header">
+          <div class="cv-role-title">Product Owner &amp; Scrum Master</div>
+          <div class="cv-role-date">November 2024 &ndash; Present</div>
+        </div>
+        <div class="cv-role-company">Jacobs &mdash; Krak&oacute;w</div>
+        <ul class="cv-bullets">
+          <li>Own the product backlog and roadmap for internal engineering tools across a multi-team programme, prioritising based on user impact and business value.</li>
+          <li>Facilitate all Scrum ceremonies: Sprint Planning, Daily Stand-ups, Sprint Reviews, and Retrospectives.</li>
+          <li>Act as the primary liaison between development teams and business stakeholders &mdash; translating complex requirements into clear user stories.</li>
+          <li>Prototype and validate product concepts using AI tools (Lovable, Claude Code) before committing engineering resources.</li>
+          <li>Drive proactive stakeholder communication, managing expectations and resolving blockers before they escalate.</li>
+        </ul>
+      </div>
+
+      <div class="cv-role">
+        <div class="cv-role-header">
+          <div class="cv-role-title">Document Control Specialist</div>
+          <div class="cv-role-date">July 2023 &ndash; October 2024</div>
+        </div>
+        <div class="cv-role-company">Jacobs &mdash; Krak&oacute;w</div>
+        <ul class="cv-bullets">
+          <li>Managed documentation workflows across large-scale international engineering projects, ensuring compliance, traceability, and audit readiness.</li>
+          <li>Proactively identified and resolved process gaps, maintaining project delivery timelines.</li>
+        </ul>
+      </div>
+
+      <div class="cv-role cv-page-break">
+        <div class="cv-role-header">
+          <div class="cv-role-title">Senior Investor Services Specialist</div>
+          <div class="cv-role-date">October 2022 &ndash; June 2023</div>
+        </div>
+        <div class="cv-role-company">Brown Brothers Harriman &mdash; Krak&oacute;w</div>
+        <ul class="cv-bullets">
+          <li>Managed client transactions and relationships across international offices (Dublin, Hong Kong, and Luxembourg) in a highly regulated environment.</li>
+          <li>Led risk escalation processes and mentored junior team members, deputising for the team supervisor when required.</li>
+        </ul>
+      </div>
+
+      <div class="cv-role">
+        <div class="cv-role-header">
+          <div class="cv-role-title">Junior Investor Services Specialist</div>
+          <div class="cv-role-date">June 2021 &ndash; September 2022</div>
+        </div>
+        <div class="cv-role-company">Brown Brothers Harriman &mdash; Krak&oacute;w</div>
+        <ul class="cv-bullets">
+          <li>Processed trades and data updates under strict regulatory frameworks across multiple global funds, developing strong analytical and compliance instincts.</li>
+        </ul>
+      </div>
+
+      <div class="cv-role">
+        <div class="cv-role-header">
+          <div class="cv-role-title">Human Resources Assistant</div>
+          <div class="cv-role-date">August 2019 &ndash; May 2020</div>
+        </div>
+        <div class="cv-role-company">Colorado Mesa University &mdash; USA</div>
+        <ul class="cv-bullets">
+          <li>Supported recruitment, onboarding, and training coordination, building a foundational understanding of people operations.</li>
+        </ul>
+      </div>
+      </div>
+    </div>
+
+    <!-- ── SKILLS ── -->
+    <div class="cv-section cv-highlight">
+      <div class="cv-section-title">Skills</div>
+      <div class="cv-skills-row">
+        <div class="cv-skill-cat">Product</div>
+        <div class="cv-skill-list">Product Roadmaps &middot; Backlog Management &middot; Requirements &amp; User Stories &middot; Stakeholder Communication &middot; Risk Management &middot; Agile &amp; Scrum &middot; Go-to-Market Readiness</div>
+      </div>
+      <div class="cv-skills-row">
+        <div class="cv-skill-cat">Technical</div>
+        <div class="cv-skill-list">Python &middot; Pandas &middot; Azure DevOps &middot; Azure Functions &middot; Power Automate &middot; Power Apps &middot; SharePoint &middot; GitHub &middot; Webhooks &amp; API Integrations &middot; SDLC</div>
+      </div>
+      <div class="cv-skills-row">
+        <div class="cv-skill-cat">AI &amp; Prototyping</div>
+        <div class="cv-skill-list">Lovable &middot; Claude Code &middot; Replit &middot; Antigravity</div>
+      </div>
+    </div>
+
+    <!-- ── CERTIFICATIONS & EDUCATION ── -->
+    <div class="cv-section cv-highlight">
+      <div class="cv-section-title">Certifications &amp; Education</div>
+      <div class="cv-two-col">
+        <div>
+          <div class="cv-col-label">Education</div>
+          <div class="cv-cert-item">
+            <div class="cv-cert-name">BSc Human Resource Management</div>
+            <div class="cv-cert-detail">University of Bradford, 2021</div>
+          </div>
+          <div class="cv-cert-item">
+            <div class="cv-cert-name">Business Management (Visiting Student)</div>
+            <div class="cv-cert-detail">Colorado Mesa University, 2020</div>
+          </div>
+        </div>
+        <div>
+          <div class="cv-col-label">Certifications</div>
+          <div class="cv-cert-item">
+            <div class="cv-cert-name">SAFe 6.0 Product Owner / Product Manager</div>
+            <div class="cv-cert-detail">2025</div>
+          </div>
+          <div class="cv-cert-item">
+            <div class="cv-cert-name">SAFe 6.0 Principles</div>
+            <div class="cv-cert-detail">2024</div>
+          </div>
+          <div class="cv-cert-item">
+            <div class="cv-cert-name">Agile Scrum Master</div>
+            <div class="cv-cert-detail">2024</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LANGUAGES ── -->
+    <div class="cv-section">
+      <div class="cv-section-title">Languages</div>
+      <div class="cv-langs">
+        <div class="cv-lang-pill"><span class="cv-lang-label">Polish</span> <span class="cv-lang-level">Native</span></div>
+        <div class="cv-lang-pill"><span class="cv-lang-label">English</span> <span class="cv-lang-level">C1</span></div>
+        <div class="cv-lang-pill"><span class="cv-lang-label">Spanish</span> <span class="cv-lang-level">B1</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* Simplex Noise 2D */
+  function createNoise2D() {
+    const perm = new Uint8Array(512);
+    const grad = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+    for (let i = 0; i < 256; i++) perm[i] = i;
+    for (let i = 255; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [perm[i], perm[j]] = [perm[j], perm[i]];
+    }
+    for (let i = 0; i < 256; i++) perm[i + 256] = perm[i];
+    const F2 = 0.5 * (Math.sqrt(3) - 1);
+    const G2 = (3 - Math.sqrt(3)) / 6;
+    return function(x, y) {
+      const s = (x + y) * F2;
+      const i = Math.floor(x + s), j = Math.floor(y + s);
+      const t = (i + j) * G2;
+      const x0 = x - (i - t), y0 = y - (j - t);
+      const i1 = x0 > y0 ? 1 : 0, j1 = x0 > y0 ? 0 : 1;
+      const x1 = x0 - i1 + G2, y1 = y0 - j1 + G2;
+      const x2 = x0 - 1 + 2 * G2, y2 = y0 - 1 + 2 * G2;
+      const ii = i & 255, jj = j & 255;
+      let n0 = 0, n1 = 0, n2 = 0;
+      let t0 = 0.5 - x0*x0 - y0*y0;
+      if (t0 >= 0) { const g = grad[perm[ii + perm[jj]] % 8]; t0 *= t0; n0 = t0 * t0 * (g[0]*x0 + g[1]*y0); }
+      let t1 = 0.5 - x1*x1 - y1*y1;
+      if (t1 >= 0) { const g = grad[perm[ii+i1 + perm[jj+j1]] % 8]; t1 *= t1; n1 = t1 * t1 * (g[0]*x1 + g[1]*y1); }
+      let t2 = 0.5 - x2*x2 - y2*y2;
+      if (t2 >= 0) { const g = grad[perm[ii+1 + perm[jj+1]] % 8]; t2 *= t2; n2 = t2 * t2 * (g[0]*x2 + g[1]*y2); }
+      return 70 * (n0 + n1 + n2);
+    };
+  }
+
+  /* Wave field for CV header */
+  const headerEl = document.getElementById('cvHeader');
+  const waveSvg = document.getElementById('cvWaveSvg');
+  const noise = createNoise2D();
+  let lines = [], paths = [], bounds = null;
+
+  function initWaves() {
+    bounds = headerEl.getBoundingClientRect();
+    waveSvg.style.width = bounds.width + 'px';
+    waveSvg.style.height = bounds.height + 'px';
+    lines = []; paths.forEach(p => p.remove()); paths = [];
+
+    const xGap = 14, yGap = 12;
+    const w = bounds.width + 100, h = bounds.height + 20;
+    const cols = Math.ceil(w / xGap);
+    const rows = Math.ceil(h / yGap);
+    const xOff = (bounds.width - xGap * cols) / 2;
+    const yOff = (bounds.height - yGap * rows) / 2;
+
+    for (let i = 0; i < cols; i++) {
+      const pts = [];
+      for (let j = 0; j < rows; j++) {
+        pts.push({ x: xOff + xGap * i, y: yOff + yGap * j });
+      }
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', 'rgba(220,140,180,0.25)');
+      path.setAttribute('stroke-width', '0.8');
+      waveSvg.appendChild(path);
+      paths.push(path);
+      lines.push(pts);
+    }
+  }
+
+  function drawStatic() {
+    lines.forEach((pts, i) => {
+      if (pts.length < 2 || !paths[i]) return;
+      let d = '';
+      pts.forEach((p, j) => {
+        const move = noise(p.x * 0.004, p.y * 0.003) * 6;
+        const wx = Math.cos(move) * 8;
+        const wy = Math.sin(move) * 4;
+        d += (j === 0 ? 'M ' : 'L ') + (p.x + wx) + ' ' + (p.y + wy);
+      });
+      paths[i].setAttribute('d', d);
+    });
+  }
+
+  function setup() { initWaves(); drawStatic(); }
+  setup();
+  window.addEventListener('resize', setup);
+</script>
+
+</body>
+</html>
